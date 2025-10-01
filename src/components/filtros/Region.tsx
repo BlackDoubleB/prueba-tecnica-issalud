@@ -1,3 +1,4 @@
+"use client";
 import {
   Select,
   SelectContent,
@@ -6,18 +7,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function Region() {
+type Props = {
+  setNombreRegion: (v: string) => void;
+  nombreRegion : string
+  filtradosRegion: string[];
+};
+
+export default function Region({
+  setNombreRegion,
+  nombreRegion,
+  filtradosRegion,
+}: Props) {
   return (
     <div className="flex flex-col gap-2">
       <label className="font-bold">Region</label>
-      <Select>
+      <Select  value={nombreRegion} onValueChange={setNombreRegion}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Region" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="light">Light</SelectItem>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="system">System</SelectItem>
+          {filtradosRegion.map((region) => (
+            <SelectItem
+              value={region}
+              key={region}
+              >
+              {region}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

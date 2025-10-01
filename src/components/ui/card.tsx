@@ -2,21 +2,14 @@ import Image from "next/image";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Country } from "@/lib/types";
 
-type Country = {
-  cca3: string;
-  name: { common: string; official: string };
-  flags: { svg: string; png: string; alt: string };
-  region: string;
-  population: number;
-  capital?: string[];
-};
-export default function Card({ posts }: { posts: Country }) {
+
+export default function Card({ paises }: { paises: Country }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -24,34 +17,34 @@ export default function Card({ posts }: { posts: Country }) {
           <div className="relative w-40 aspect-[3/2]">
             <Image
               className="object-cover rounded-md border border-royal-blue-100 shadow-md shadow-royal-blue-400"
-              src={posts.flags.png}
+              src={paises.flags.png}
               fill
-              alt={posts.flags.alt || `Bandera de ${posts.name.common}`}
+              alt={paises.flags.alt || `Bandera de ${paises.name.common}`}
             />
           </div>
-          <h2 className="font-bold text-center">{posts.name.common}</h2>
-          <p>{posts.region}</p>
-          <p>{posts.population}</p>
+          <h2 className="font-bold text-center">{paises.name.common}</h2>
+          <p>{paises.region}</p>
+          <p>{paises.population}</p>
         </div>
       </DialogTrigger>
       <DialogContent className="text-royal-blue-900">
         <DialogHeader>
-          <DialogTitle>{posts.name.official}</DialogTitle>
+          <DialogTitle>{paises.name.official}</DialogTitle>
         </DialogHeader>
          <div className="flex items-start gap-4">
           <div className="relative w-28 aspect-[3/2]">
             <Image
-              src={posts.flags.png}
-              alt={posts.flags.alt || ""}
+              src={paises.flags.png}
+              alt={paises.flags.alt || ""}
               fill
               className="rounded-md border border-neutral-300 shadow-md shadow-neutral-300"
               
             />
           </div>
           <div className="space-y-1 text-sm">
-            <div><strong>Capital:</strong> {posts.capital?.[0] ?? "Sin capital"}</div>
-            <div><strong>Región:</strong> {posts.region}</div>
-            <div><strong>Población:</strong> {posts.population.toLocaleString()}</div>
+            <div><strong>Capital:</strong> {paises.capital?.[0] ?? "Sin capital"}</div>
+            <div><strong>Región:</strong> {paises.region}</div>
+            <div><strong>Población:</strong> {paises.population.toLocaleString()}</div>
            
           </div>
         </div>
