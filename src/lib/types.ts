@@ -6,3 +6,5 @@ export type Country = {
   population: number;
   capital?: string[];
 };
+
+export type Orden = "" | "asc" | "desc";
