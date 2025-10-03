@@ -14,17 +14,14 @@ export default function PanelFiltros({ dataApi }: { dataApi: Country[] }) {
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
   const [orden, setOrden] = useState<Orden>("");
-  const [favoritos, setFavoritos] = useState<string[]>([]);
-  console.log("favoritos", favoritos);
+
   const filtrosCard = useMemo<Country[]>(() => {
-   
     const nombreNorm = norm(nombrePais);
     const regionNorm = norm(nombreRegion);
 
     const minPoblacion = Math.abs(min);
     const maxPoblacion = Math.abs(max);
 
-    
     const esMin = Number.isFinite(minPoblacion) && minPoblacion > 0;
     const esMax = Number.isFinite(maxPoblacion) && maxPoblacion > 0;
 
@@ -61,7 +58,6 @@ export default function PanelFiltros({ dataApi }: { dataApi: Country[] }) {
     }
 
     return data;
-    
   }, [dataApi, nombrePais, nombreRegion, min, max, orden]);
 
   const filtrosRegion = useMemo(
@@ -70,29 +66,31 @@ export default function PanelFiltros({ dataApi }: { dataApi: Country[] }) {
   );
 
   return (
-    <div>
-      <h1 className="text-4xl py-5 font-bold">Paises</h1>
-      <div className="flex gap-10">
-        <div className="flex flex-col gap-5 w-fit rounded-md p-5 h-fit bg-royal-blue-200 border border-royal-blue-100 shadow-md shadow-royal-blue-400">
-          <Pais nombrePais={nombrePais} setNombrePais={setNombrePais}></Pais>
-          <Region
-            nombreRegion={nombreRegion}
-            filtradosRegion={filtrosRegion}
-            setNombreRegion={setNombreRegion}
-          ></Region>
-          <Poblacion
-            min={min}
-            max={max}
-            setMin={setMin}
-            setMax={setMax}
-          ></Poblacion>
+    <div className="">
+      <div className="grid grid-cols-[auto_1fr] gap-10 min-h-screen items-start">
+        <div className="sticky top-17 py-5">
+          <h1 className="text-4xl font-bold pb-5">Paises</h1>
+          <div className="flex flex-col gap-5 w-fit rounded-md p-10 h-fit bg-royal-blue-200 border border-royal-blue-100 shadow-md shadow-royal-blue-400">
+            <Pais nombrePais={nombrePais} setNombrePais={setNombrePais}></Pais>
+            <Region
+              nombreRegion={nombreRegion}
+              filtradosRegion={filtrosRegion}
+              setNombreRegion={setNombreRegion}
+            ></Region>
+            <Poblacion
+              min={min}
+              max={max}
+              setMin={setMin}
+              setMax={setMax}
+            ></Poblacion>
+          </div>
         </div>
-        <div className="flex-1 flex flex-col gap-5">
+        <div className="flex-1 flex flex-col gap-5 w-fit py-5">
           <OrdenarPais orden={orden} setOrden={setOrden}></OrdenarPais>
 
-          <div className="flex flex-wrap gap-10 ">
+          <div className="grid grid-cols-[auto_auto] w-fit gap-10">
             {filtrosCard.length === 0 ? (
-              <div className="bg-royal-blue-200 rounded-md p-10 flex flex-col justify-center items-center gap-2 border border-royal-blue-100 shadow-md shadow-royal-blue-400 cursor-pointer w-60 ">
+              <div className="bg-royal-blue-200 rounded-md p-16 flex flex-col justify-center items-center gap-2 border border-royal-blue-100 shadow-md shadow-royal-blue-400 cursor-pointer w-60">
                 Sin resultados.
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +110,9 @@ export default function PanelFiltros({ dataApi }: { dataApi: Country[] }) {
               </div>
             ) : (
               filtrosCard.map((x) => (
-                <Card paises={x} favoritos={favoritos}  setFavoritos={setFavoritos} key={x.cca3 ?? x.name.common} />
+                <div key={x.cca3 ?? x.name.common}>
+                  <Card paises={x} />
+                </div>
               ))
             )}
           </div>

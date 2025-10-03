@@ -17,11 +17,10 @@ type Props = {
 export default function OrdenarPais({ orden, setOrden }: Props) {
   return (
     <div className="flex flex-col gap-2 w-fit">
-      <label className="font-bold">Ordenar por</label>
       <div className="flex items-center gap-2 w-52">
         <Select value={orden} onValueChange={setOrden}>
           <SelectTrigger>
-            <SelectValue placeholder="Pais" />
+            <SelectValue placeholder="Ordenar por" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="asc">Pais (A-Z)</SelectItem>

@@ -23,7 +23,7 @@ export default function Region({
       <label className="font-bold">Region</label>
       <Select  value={nombreRegion} onValueChange={setNombreRegion}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Region" />
+          <SelectValue placeholder="Filtrar" />
         </SelectTrigger>
         <SelectContent>
           {filtradosRegion.map((region) => (

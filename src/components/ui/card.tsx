@@ -8,27 +8,31 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Country } from "@/lib/types";
+import { useFavorites } from "@/store/favorites";
+import { useEffect, useState } from "react";
 
 type Props = {
   paises: Country;
-  favoritos: string[];
-  setFavoritos: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-export default function Card({ paises, setFavoritos, favoritos }: Props) {
-  const nombre = paises.name.common;                 
-  const isFav = favoritos.includes(nombre);          
+export default function Card({ paises }: Props) {
+  const nombre = paises.name.common;
+  // selectores
+  const isFav = useFavorites((s) => s.has(nombre));
+  const toggle = useFavorites((s) => s.toggle);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const toggleFav = () => {
-    setFavoritos((prev) =>
-      prev.includes(nombre)? prev.filter((n) => n !== nombre): [...prev, nombre]
-    );
-  };
+  if (!mounted) {
+    return null;
+  }
   return (
-    <div className="relative">
+    <div className="relative h-full w-fit">
       <Dialog>
         <DialogTrigger asChild>
-          <div className="bg-royal-blue-200 hover:bg-royal-blue-250 rounded-md p-10 flex flex-col items-center gap-2 border border-royal-blue-100 shadow-md shadow-royal-blue-400 w-60 aspect-video">
+          <div className="bg-royal-blue-200 hover:bg-royal-blue-250 rounded-md p-10 flex flex-col items-center gap-2 border border-royal-blue-100 shadow-md shadow-royal-blue-400 w-60 h-full">
             <div className="relative w-40 aspect-[3/2]">
               <Image
                 className="cursor-pointer object-cover rounded-md border border-royal-blue-100 shadow-md shadow-royal-blue-400"
@@ -72,13 +76,12 @@ export default function Card({ paises, setFavoritos, favoritos }: Props) {
       <button
         type="button"
         className="absolute top-0 right-1 p-2 bg-royal-blue-800 rounded-b-md cursor-pointer"
-        onClick={toggleFav}
+        onClick={() => toggle(nombre)}
         aria-pressed={isFav}
         title={isFav ? "Quitar de favoritos" : "Agregar a favoritos"}
       >
         <svg
-          className={`${isFav  ? " text-yellow-400 "
-            : " text-gray-100  "}
+          className={`${isFav ? " text-yellow-400 " : " text-gray-100  "}
         `}
           xmlns="http://www.w3.org/2000/svg"
           width="1em"
